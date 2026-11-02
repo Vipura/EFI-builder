@@ -1,0 +1,1 @@
+Raw tables dumped: DSDT.aml, SSDT-0.aml to SSDT-12.aml

@@ -1,0 +1,5 @@
+CPU: Intel Core i5-1135G7 @ 2.40GHz (Tiger Lake LP)
+GPU: Intel Iris Xe Graphics (80 EUs, Device ID 0x9A49)
+Audio: Realtek ALC257/287 (Intel cAVS 8086:A0C8)
+Touchpad: MSFT0001 (I2C1 HID)
+Wi-Fi: Intel Wi-Fi 6 AX201 (CNVi 8086:A0F0)
