@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local download cache
+tigerlake-efi-builder/cache/
+cache/
+
+# Partial downloads
+*.part
+*.tmp
+
+# Operating System Files
+.DS_Store
+Thumbs.db
