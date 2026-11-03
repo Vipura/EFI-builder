@@ -44,11 +44,11 @@ if exist "main.py" (
     exit /b 1
 )
 
-echo [1/3] Verifying Python dependencies...
+echo [1/2] Verifying Python dependencies...
 "%PYTHON_EXE%" -m pip install -q -r "%PROJ_DIR%\requirements.txt"
 
 echo.
-echo [2/3] Executing TigerLake EFI Builder...
+echo [2/2] Running TigerLake EFI Builder...
 echo.
 "%PYTHON_EXE%" "%PROJ_DIR%\main.py" %*
 if !errorlevel! neq 0 (
@@ -59,16 +59,5 @@ if !errorlevel! neq 0 (
     exit /b !errorlevel!
 )
 
-echo.
-echo [3/3] Opening generated EFI folder in File Explorer...
-if exist "%PROJ_DIR%\dist\EFI" (
-    start "" explorer "%PROJ_DIR%\dist\EFI"
-)
-
-echo.
-echo ============================================================
-echo   SUCCESS! The EFI folder is generated and opened for you.
-echo   Simply copy and paste the 'EFI' folder onto your USB.
-echo ============================================================
 echo.
 pause

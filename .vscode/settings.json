@@ -2,6 +2,7 @@
   "python.defaultInterpreterPath": "C:\\Users\\vipur\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
   "python.analysis.extraPaths": [
     "${workspaceFolder}/tigerlake-efi-builder",
-    "${workspaceFolder}/tigerlake-efi-builder/modules"
+    "${workspaceFolder}/tigerlake-efi-builder/modules",
+    "C:\\Users\\vipur\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages"
   ]
 }

@@ -2,6 +2,7 @@
   "python.defaultInterpreterPath": "C:\\Users\\vipur\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
   "python.analysis.extraPaths": [
     "${workspaceFolder}",
-    "${workspaceFolder}/modules"
+    "${workspaceFolder}/modules",
+    "C:\\Users\\vipur\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages"
   ]
 }

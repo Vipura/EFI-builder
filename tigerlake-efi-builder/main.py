@@ -11,6 +11,8 @@ compiles ACPI SSDTs, generates config.plist, and outputs a validated EFI folder.
 
 import argparse
 import json
+import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -66,6 +68,37 @@ def ensure_directories():
         d.mkdir(parents=True, exist_ok=True)
 
 
+def prompt_save_location(default_dir: Path) -> Path:
+    """Open a native Windows folder picker dialog asking where to save the EFI folder."""
+    console.rule("[bold cyan]Select Save Location[/bold cyan]")
+    console.print("[cyan]Opening Windows folder picker... Please select where to save your EFI folder.[/cyan]")
+    console.print("[dim](e.g., your USB drive, Desktop, or press Cancel to use the project 'dist/' folder)[/dim]\n")
+
+    selected_path = None
+    try:
+        import tkinter as tk
+        from tkinter import filedialog
+        root = tk.Tk()
+        root.withdraw()
+        root.attributes("-topmost", True)
+        selected = filedialog.askdirectory(
+            title="TigerLake-EFI-Builder: Select destination folder for EFI",
+            initialdir=str(default_dir),
+        )
+        root.destroy()
+        if selected and Path(selected).exists():
+            selected_path = Path(selected).resolve()
+    except Exception as e:
+        console.print(f"[dim]GUI folder picker unavailable: {e}[/dim]")
+
+    if selected_path:
+        console.print(f"[green]✓[/green] Destination selected: [bold cyan]{selected_path}[/bold cyan]\n")
+        return selected_path
+    else:
+        console.print(f"[yellow]ℹ[/yellow] Using default project destination: [bold cyan]{default_dir}[/bold cyan]\n")
+        return default_dir
+
+
 def step_hardware_scan() -> dict:
     """Step 1: Scan host hardware and display report."""
     console.rule("[bold blue]Step 1/5: Hardware Scan[/bold blue]")
@@ -78,7 +111,6 @@ def step_hardware_scan() -> dict:
 
     # Save hardware report
     report_path = PROJECT_ROOT / "hardware_report.json"
-    # Convert bytes to hex strings for JSON serialization
     serializable = json.loads(json.dumps(report, default=str))
     with open(report_path, "w") as f:
         json.dump(serializable, f, indent=2)
@@ -227,7 +259,6 @@ def step_download_recovery():
             break
 
     if macrecovery is None:
-        # Try to download macrecovery.py from OpenCorePkg repo
         console.print("[cyan]Downloading macrecovery.py from OpenCorePkg...[/cyan]")
         import requests
         url = "https://raw.githubusercontent.com/acidanthera/OpenCorePkg/master/Utilities/macrecovery/macrecovery.py"
@@ -242,8 +273,6 @@ def step_download_recovery():
             console.print("[dim]  You can manually download the macOS recovery image.[/dim]")
             return
 
-    # Run macrecovery to download Sonoma recovery
-    # Board ID for MacBookAir9,1
     console.print("[cyan]Downloading macOS Sonoma recovery image...[/cyan]")
     console.print("[dim]  This may take several minutes depending on your connection.[/dim]")
     console.print()
@@ -262,7 +291,6 @@ def step_download_recovery():
         if result.stdout:
             console.print(result.stdout)
         if result.returncode == 0:
-            # Check for downloaded files
             base_system = recovery_dir / "BaseSystem.dmg"
             chunklist = recovery_dir / "BaseSystem.chunklist"
             if base_system.exists():
@@ -281,12 +309,24 @@ def step_download_recovery():
     console.print()
 
 
-def print_summary():
-    """Print the final summary with EFI folder location."""
-    efi_path = EFI_DIR.resolve()
+def print_summary(target_dir: Path | None = None):
+    """Print the final summary with EFI folder location and copy to chosen directory."""
+    target = target_dir or DIST_DIR
+    final_efi = target if target.name.upper() == "EFI" else target / "EFI"
+
+    # If user selected a custom destination outside dist, copy EFI there
+    if target.resolve() != DIST_DIR.resolve() and target.resolve() != EFI_DIR.resolve():
+        try:
+            final_efi.mkdir(parents=True, exist_ok=True)
+            shutil.copytree(EFI_DIR, final_efi, dirs_exist_ok=True)
+            console.print(f"[green]✓[/green] EFI folder successfully copied to: [bold cyan]{final_efi}[/bold cyan]\n")
+        except Exception as e:
+            console.print(f"[yellow]⚠ Could not copy to custom location ({e}), EFI is available at dist/EFI[/yellow]\n")
+
+    efi_display = final_efi.resolve() if final_efi.exists() else EFI_DIR.resolve()
     console.print(Panel(
         f"[bold green]EFI folder successfully generated![/bold green]\n\n"
-        f"  📁 Location: [cyan]{efi_path}[/cyan]\n\n"
+        f"  📁 Location: [cyan]{efi_display}[/cyan]\n\n"
         f"  [dim]Copy the EFI folder to the EFI partition of your USB installer.[/dim]\n"
         f"  [dim]Ensure you verify the SMBIOS serial at [/dim][blue]https://checkcoverage.apple.com[/blue]\n"
         f"  [dim](serial should return 'invalid' for a safe Hackintosh SMBIOS).[/dim]\n\n"
@@ -300,6 +340,13 @@ def print_summary():
         border_style="green",
     ))
 
+    # Automatically open File Explorer to the EFI directory
+    try:
+        folder_to_open = efi_display if efi_display.is_dir() else efi_display.parent
+        os.startfile(str(folder_to_open))
+    except Exception:
+        pass
+
 
 def main():
     """Main entry point."""
@@ -307,6 +354,12 @@ def main():
         prog="TigerLake-EFI-Builder",
         description="Automated OpenCore EFI builder for Lenovo IdeaPad Slim 5 (82FG) "
                     "with 11th Gen Intel Core i5-1135G7 and Intel Iris Xe Graphics.",
+    )
+    parser.add_argument(
+        "--output-dir", "-o",
+        type=str,
+        default=None,
+        help="Custom destination directory to save the EFI folder (skips GUI folder picker)",
     )
     parser.add_argument(
         "--download-recovery",
@@ -328,13 +381,19 @@ def main():
 
     # Set GitHub token if provided
     if args.github_token:
-        import os
         os.environ["GITHUB_TOKEN"] = args.github_token
 
     print_banner()
 
-    # Create directory structure
+    # Create internal directory structure
     ensure_directories()
+
+    # Determine output save location
+    if args.output_dir:
+        target_dir = Path(args.output_dir).resolve()
+        console.print(f"[green]✓[/green] Destination directory: [bold cyan]{target_dir}[/bold cyan]\n")
+    else:
+        target_dir = prompt_save_location(DIST_DIR)
 
     # Step 1: Hardware scan
     if args.skip_hw_scan:
@@ -375,10 +434,9 @@ def main():
     if args.download_recovery:
         step_download_recovery()
 
-    # Final summary
-    print_summary()
+    # Final summary & export to chosen location + open File Explorer
+    print_summary(target_dir)
 
 
 if __name__ == "__main__":
     main()
-
