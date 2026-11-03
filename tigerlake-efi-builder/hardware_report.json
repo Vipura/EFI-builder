@@ -1,0 +1,56 @@
+{
+  "cpu": {
+    "name": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+    "cores": 4,
+    "threads": 8,
+    "is_tiger_lake": true
+  },
+  "igpu": {
+    "name": "Intel(R) Iris(R) Xe Graphics",
+    "pci_id": "VEN_8086&DEV_9A49",
+    "device_id": "0x9a49",
+    "verified": true
+  },
+  "dgpu": {
+    "name": "Not Found",
+    "pci_id": "",
+    "acpi_path": "",
+    "needs_disable": false
+  },
+  "input": {
+    "keyboard": {
+      "type": "Unknown",
+      "pnp_id": ""
+    },
+    "trackpad": {
+      "type": "I2C HID",
+      "pnp_id": "ACPI\\SYNA2BA6\\4&2E272483&0",
+      "is_i2c": true
+    }
+  },
+  "network": {
+    "wifi": {
+      "name": "Intel(R) Wi-Fi 6 AX201 160MHz",
+      "pci_id": "VEN_8086&DEV_A0F0",
+      "is_intel": true
+    },
+    "bluetooth": {
+      "name": "Intel(R) Wireless Bluetooth(R)",
+      "usb_id": "0x8087:0x0026"
+    }
+  },
+  "audio": {
+    "name": "Realtek High Definition Audio(SST)",
+    "codec_id": "VEN_10EC&DEV_0257",
+    "alc_layout_id": 1
+  },
+  "storage": {
+    "nvme_detected": true,
+    "controller": "UMIS RPJTJ128MEE1MWX"
+  },
+  "machine": {
+    "manufacturer": "LENOVO",
+    "model": "82FG",
+    "bios_version": "FHCN78WW"
+  }
+}
