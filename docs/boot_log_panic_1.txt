@@ -1,0 +1,1 @@
+Kernel panic: AppleUSBHostController::probe failed with unsupported controller 8086:A0ED
