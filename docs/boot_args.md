@@ -1,0 +1,1 @@
+Set boot-args: -v debug=0x100 keepsyms=1
