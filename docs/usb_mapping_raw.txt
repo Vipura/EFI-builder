@@ -1,0 +1,1 @@
+Raw ports: HS01 (USB2 Type-A right), HS02 (USB2 Type-A left), HS03 (Type-C USB2), HS05 (BT), SS01 (USB3 Type-A), SS02 (Type-C USB3)
