@@ -1,0 +1,1 @@
+Kernel panic: AppleIntelTGLGraphicsFramebuffer::init stolen memory allocation exceeded BIOS DVMT reservation (32MB).
