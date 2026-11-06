@@ -1,0 +1,1 @@
+Connector Index 0: Type DP/HDMI default -> Needs eDP patch.
