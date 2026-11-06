@@ -1,0 +1,3 @@
+Recovered symbols:
+__ZN4XELP23wrapTGLAcceleratorProbeEP9IOService
+__ZN4XELP13decodeTGLGT2EP9IOService
