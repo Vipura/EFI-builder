@@ -1,0 +1,1 @@
+Live IORegistry query: 'TGLGT2Qualified' = No
