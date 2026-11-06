@@ -1,0 +1,1 @@
+Application Crash: Chess / Maps -> Exception: Metal device not available (MTLCreateSystemDefaultDevice returned nil).
