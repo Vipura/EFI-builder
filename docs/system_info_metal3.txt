@@ -1,0 +1,5 @@
+System Information -> Graphics:
+Intel Iris Xe Graphics:
+  Metal Support: Metal 3
+  Metal Family: Apple 7
+  VRAM: 1536 MB
