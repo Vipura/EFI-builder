@@ -1,0 +1,1 @@
+PCI 8086:A0C8 (Intel cAVS). Spoofing Ice Lake 0x34C8 and layout-id 100.
