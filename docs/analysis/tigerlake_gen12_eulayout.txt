@@ -1,0 +1,3 @@
+Tiger Lake Gen12 Xe-LP Architecture:
+96 EU (Core i7): 6 Dual-Subslices, 8 active sampler slices
+80 EU (Core i5): 5 Dual-Subslices, 6 active sampler slices
