@@ -1,0 +1,1 @@
+IntelAccelerator attached! AppleIntelTGLGraphics running with IOAccelerator.
