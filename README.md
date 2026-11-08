@@ -24,7 +24,7 @@ While Intel 11th Gen Tiger Lake processors are officially unsupported by Apple, 
 | **Model** | Lenovo IdeaPad Slim 5 14ITL05 |
 | **Processor** | Intel Core i5-1135G7 (4 Cores / 8 Threads, up to 4.2 GHz) |
 | **Graphics** | Intel Iris Xe Graphics (80 Execution Units, PCI ID `8086:9A49`) |
-| **Memory** | 16 GB DDR4 3200 MHz Dual-Channel |
+| **Memory** | 8 GB DDR4 3200 MHz Dual-Channel |
 | **Internal Display** | 14.0" Full HD (1920x1080) IPS eDP |
 | **Audio** | Realtek ALC257 / ALC287 on Intel cAVS (`8086:A0C8`) |
 | **Storage** | 128 GB NVMe SSD (macOS) + 1.0 TB HDD (Data) |
@@ -75,7 +75,9 @@ eq 8$ evaluated to `False`, writing `TGLGT2Qualified = No` and preventing the `A
 
 In **macOS Tahoe 26**, Apple completely removed `AppleHDA.kext` and `AppleHDAController.kext`.
 - **Solution:** Inject `SimpleHDA.kext` (by laobamac) via OpenCore in sequence:
-  `Lilu.kext` $ightarrow$ `AppleALC.kext` $ightarrow$ `SimpleHDA.kext`.
+  `Lilu.kext` $
+ightarrow$ `AppleALC.kext` $
+ightarrow$ `SimpleHDA.kext`.
 - **DeviceProperties:** Injected Ice Lake controller spoof `0x34C8` at `PciRoot(0x0)/Pci(0x1f,0x3)` with layout `100` (`alcid=100`).
 - **HAL Plugin:** Installed `SimpleHDA-HAL-1.0.1.pkg` to restore native volume sliders.
 
