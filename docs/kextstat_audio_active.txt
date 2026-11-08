@@ -1,0 +1,1 @@
+kextstat: cn.laobamac.SimpleHDA, as.vit9696.AppleALC, and com.apple.driver.AppleHDAController active.
